@@ -1,6 +1,11 @@
 #include "rendering/renderer.hpp"
 
-Renderer::Renderer(GLFWwindow* window) : window(window) {
+Renderer::Renderer(GLFWwindow* window, bool wireframe) : window(window) {
+    if (wireframe) {
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); // Set polygon mode to wireframe
+    } else {
+        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); // Set polygon mode to fill
+    }
 }
 
 Renderer::~Renderer() {

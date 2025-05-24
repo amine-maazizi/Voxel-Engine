@@ -16,5 +16,7 @@ class Block {
         // let's start with a triangel to make it easier
         unsigned int VBO;
         unsigned int VAO;
+        unsigned int EBO; 
+
         Shader shader;
 };

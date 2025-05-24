@@ -69,6 +69,7 @@ void Window::processInput() {
 }
 
 void Window::update() {
+    
     while (!glfwWindowShouldClose(window)) {
         processInput();
         renderer->render(blocks, 1); 

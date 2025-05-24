@@ -10,7 +10,7 @@
 
 class Renderer {
     public:
-        Renderer(GLFWwindow* window);
+        Renderer(GLFWwindow* window, bool wireframe = false);
         ~Renderer();
 
         void render(Block* blocks, int blockCount);
