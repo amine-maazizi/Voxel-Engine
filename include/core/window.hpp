@@ -1,8 +1,10 @@
+#pragma once
+
 #include <iostream>
 #include <stdlib.h>
 
-#include "renderer.hpp"
-
+#include "rendering/renderer.hpp"
+#include "core/block.hpp"
 
 
 class Window {
@@ -16,5 +18,8 @@ class Window {
     private:
         GLFWwindow* window;
         Renderer* renderer;
+
+        // Block array
+        Block* blocks;
 };
 

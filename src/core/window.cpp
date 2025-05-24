@@ -44,9 +44,19 @@ Window::Window() {
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
     renderer = new Renderer(window);
+
+    // Initialize blocks
+    blocks = new Block[1]; // For now, just one block
+    if (!blocks) {
+        std::cerr << "Failed to allocate memory for blocks" << std::endl;
+        glfwDestroyWindow(window);
+        glfwTerminate();
+        exit(-1);
+    }
 }
 
 Window::~Window() {
+    delete[] blocks; // Clean up blocks
     delete renderer;
     glfwDestroyWindow(window);
     glfwTerminate();
@@ -61,7 +71,7 @@ void Window::processInput() {
 void Window::update() {
     while (!glfwWindowShouldClose(window)) {
         processInput();
-        renderer->render();
+        renderer->render(blocks, 1); 
 
         glfwSwapBuffers(window);
         glfwPollEvents();
