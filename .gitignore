@@ -30,3 +30,11 @@
 *.exe
 *.out
 *.app
+
+# Ignore lib folder (all files and subfolders)
+lib/
+
+# Ignore build folder (all files and subfolders)
+build/
+
+.vscode/

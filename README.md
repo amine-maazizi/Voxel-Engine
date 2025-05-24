@@ -57,3 +57,8 @@ Voxel-Engine/
 1. Install dependencies (GLFW, GLAD, GLM).
 2. Configure with CMake.
 3. Build and run from `build/`.
+
+
+# WSL
+
+export DISPLAY=$(ip route list default | awk '{print $3}'):0
