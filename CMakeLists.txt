@@ -25,11 +25,11 @@ set(GLAD_SRC ${GLAD_DIR}/src/glad.c)
 set(SOURCES
     src/main.cpp
     
-    src/rendering/renderer.cpp
     src/rendering/shader.cpp
 
-    src/core/window.cpp
+    src/core/engine.cpp
     src/core/block.cpp
+    src/core/camera.cpp
 
     ${GLAD_SRC}
 )

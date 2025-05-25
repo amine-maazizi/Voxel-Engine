@@ -11,6 +11,7 @@ Shader::Shader(const std::string& vertexPath, const std::string& fragmentPath) {
     
     if (vertexCode.empty() || fragmentCode.empty()) {
         std::cerr << "ERROR::SHADER::FAILED_TO_LOAD_SHADER_FILES" << std::endl;
+        ID = 0; // Set ID to 0 to indicate failure
         return;
     }
     

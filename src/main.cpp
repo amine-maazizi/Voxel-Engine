@@ -1,7 +1,7 @@
-#include "core/window.hpp"
+#include "core/engine.hpp"
 
 int main() {
-    Window window;
-    window.update();
+    Engine engine;    // Creates engine and OpenGL context
+    engine.update();  // Start rendering loop
     return 0;
 }
