@@ -20,7 +20,6 @@ class Engine {
         void renderBlock(glm::vec3 position, glm::vec3 rotation = glm::vec3(0.0f, 0.0f, 0.0f));
     private:
         GLFWwindow* window;
-        Camera camera;
 
         Block* block;
 
@@ -36,5 +35,8 @@ class Engine {
             glm::vec3(0.0f, -2.0f, -5.0f),
             glm::vec3(1.0f, 1.0f, -5.0f)
         };
+    public:
+        Camera camera;
+
 };
 

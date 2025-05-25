@@ -5,6 +5,27 @@ void framebuffer_size_callback(GLFWwindow* Engine, int width, int height) {
     glViewport(0, 0, width, height);
 }
 
+void mouse_callback(GLFWwindow* window, double xpos, double ypos) {
+    // getting camera instance from user pointer
+    Engine* engine = static_cast<Engine*>(glfwGetWindowUserPointer(window));
+    if (engine) {
+        engine->camera.processMouseMovement(static_cast<float>(xpos), static_cast<float>(ypos));
+    } else {
+        std::cerr << "Failed to get Engine instance from window user pointer." << std::endl;
+    }
+}
+
+void scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
+    // Getting camera instance from user pointer
+    Engine* engine = static_cast<Engine*>(glfwGetWindowUserPointer(window));
+    if (engine) {
+        engine->camera.processMouseScroll(static_cast<float>(yoffset));
+    } else {
+        std::cerr << "Failed to get Engine instance from window user pointer." << std::endl;
+    }
+}
+
+
 Engine::Engine(bool wireframe) : wireframe(wireframe) {
     if (!glfwInit()) {
         const char* description;
@@ -41,9 +62,15 @@ Engine::Engine(bool wireframe) : wireframe(wireframe) {
 
     std::cerr << "OpenGL Version: " << glGetString(GL_VERSION) << std::endl;
 
-    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);  
 
-        if (wireframe) {
+    glfwSetWindowUserPointer(window, this); // Set the user pointer to this instance
+    
+    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+    glfwSetCursorPosCallback(window, mouse_callback);
+    glfwSetScrollCallback(window, scroll_callback);
+
+    if (wireframe) {
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); // Set polygon mode to wireframe
     } else {
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); // Set polygon mode to fill
@@ -51,16 +78,7 @@ Engine::Engine(bool wireframe) : wireframe(wireframe) {
     glEnable(GL_DEPTH_TEST); // Enable depth testing for 3D rendering
 
 
-    camera = Camera(
-        glm::vec3(0.0f, 0.0f, 3.0f), // Position
-        glm::vec3(0.0f, 0.0f, -1.0f), // Front vector
-        glm::vec3(0.0f, 1.0f, 0.0f), // Up vector
-        45.0f,                       // Field of view
-        800.0f / 600.0f,            // Aspect ratio
-        0.1f,                        // Near plane
-        100.0f,                       // Far plane
-        2.5f                        // Camera speed
-    );
+    camera = Camera();
 
     block = new Block(); // Initialize the block object
     if (!block) {
