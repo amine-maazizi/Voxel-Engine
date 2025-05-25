@@ -53,7 +53,7 @@ Engine::Engine(bool wireframe) : wireframe(wireframe) {
 
     camera = Camera(
         glm::vec3(0.0f, 0.0f, 3.0f), // Position
-        glm::vec3(0.0f, 0.0f, 0.0f), // Target
+        glm::vec3(0.0f, 0.0f, -1.0f), // Front vector
         glm::vec3(0.0f, 1.0f, 0.0f), // Up vector
         45.0f,                       // Field of view
         800.0f / 600.0f,            // Aspect ratio
