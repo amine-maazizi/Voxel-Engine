@@ -15,6 +15,7 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos) {
     }
 }
 
+
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
     // Getting camera instance from user pointer
     Engine* engine = static_cast<Engine*>(glfwGetWindowUserPointer(window));
@@ -88,16 +89,22 @@ Engine::Engine(bool wireframe, int chunkSize) : wireframe(wireframe), chunkSize(
         exit(-1);
     }
 
-    blockPositions = new glm::vec3[chunkSize]();
+    blockData = new BlockData[chunkSize * chunkSize * chunkSize];
+    int halfChunk = chunkSize /2;
 
-    // for (int x=-chunkSize / 2; x < chunkSize / 2; x++) {
-    //     blockPositions[x + chunkSize] = glm::vec3(0.0, x, 0.0);
-    // }
+    for (int x=-halfChunk; x < halfChunk; x++) {
+        for (int y=-halfChunk; y < halfChunk; y++) {
+            for (int z=-halfChunk; z < halfChunk; z++) {
+                int index = x + halfChunk + chunkSize * ((y + halfChunk) + chunkSize * (z + halfChunk));
+                blockData[index] = (y < 0) ? BlockData{glm::vec3(x, y, z), BlockType::DIRT} : BlockData{glm::vec3(x, y, z), BlockType::AIR};
+            }
+        }
+    }
 
 }
 
 Engine::~Engine() {
-    delete blockPositions;
+    delete blockData;
     delete block; // Clean up the block object
     glfwDestroyWindow(window);
     glfwTerminate();
@@ -144,7 +151,8 @@ void Engine::render() {
     glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    for (int i = 0; i < chunkSize; ++i) {
-        renderBlock(blockPositions[i]);
+    for (int i = 0; i < chunkSize * chunkSize * chunkSize; ++i) {
+        if (blockData[i].type == BlockType::DIRT)
+            renderBlock(blockData[i].position);
     }
 }

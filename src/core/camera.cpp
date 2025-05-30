@@ -50,9 +50,9 @@ void Camera::processInput(float dt)
         position -= glm::normalize(glm::cross(front, up)) * cameraSpeed * dt; // Move left
     } else if (glfwGetKey(glfwGetCurrentContext(), GLFW_KEY_D) == GLFW_PRESS) {
         position += glm::normalize(glm::cross(front, up)) * cameraSpeed * dt; // Move right
-    } else if (glfwGetKey(glfwGetCurrentContext(), GLFW_KEY_UP) == GLFW_PRESS) {
+    } else if (glfwGetKey(glfwGetCurrentContext(), GLFW_KEY_Q) == GLFW_PRESS) {
         position += up * cameraSpeed * dt; // Move up
-    } else if (glfwGetKey(glfwGetCurrentContext(), GLFW_KEY_DOWN) == GLFW_PRESS) {
+    } else if (glfwGetKey(glfwGetCurrentContext(), GLFW_KEY_E) == GLFW_PRESS) {
         position -= up * cameraSpeed * dt; // Move down
     }
 }

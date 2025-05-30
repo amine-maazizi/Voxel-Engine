@@ -27,7 +27,7 @@ class Engine {
         int chunkSize;
 
         // Block array
-        glm::vec3* blockPositions;
+        BlockData* blockData;
     public:
         Camera camera;
 

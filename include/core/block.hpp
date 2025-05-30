@@ -4,6 +4,16 @@
 #include "rendering/shader.hpp"
 #include "core/camera.hpp"
 
+enum BlockType {
+    AIR,
+    DIRT
+};
+
+struct BlockData {
+    glm::vec3 position;
+    BlockType type;
+};
+
 class Block {
     public:
         Block();
