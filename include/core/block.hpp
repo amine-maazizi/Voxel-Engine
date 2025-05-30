@@ -4,6 +4,8 @@
 #include "rendering/shader.hpp"
 #include "core/camera.hpp"
 
+#include "utils/stb_image.h"
+
 enum BlockType {
     AIR,
     DIRT
@@ -25,6 +27,7 @@ class Block {
         unsigned int VBO;
         unsigned int VAO;
         unsigned int EBO; 
+        unsigned int texture;
         Shader shader;
 };
 

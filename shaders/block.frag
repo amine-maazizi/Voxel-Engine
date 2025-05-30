@@ -2,8 +2,12 @@
 out vec4 FragColor;
 
 in float gradient;
+in vec2 TexCoord;
+
+uniform sampler2D blockTexture;
+
 
 void main()
 {
-    FragColor = vec4(0.0, 1.0, 0.0, 1.0) * (1.0 - gradient);
+    FragColor = texture(blockTexture, TexCoord) * (1.0 - gradient);
 } 

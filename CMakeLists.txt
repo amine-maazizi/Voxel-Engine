@@ -15,6 +15,7 @@ include_directories(
     ${GLFW_DIR}/include
     ${GLAD_DIR}/include
     ${GLM_DIR}
+    ${CMAKE_SOURCE_DIR}/lib/stb_image
     ${CMAKE_SOURCE_DIR}/include
 )
 
@@ -31,6 +32,8 @@ set(SOURCES
     src/core/engine.cpp
     src/core/block.cpp
     src/core/camera.cpp
+
+    src/utils/stb_image.cpp
 
     ${GLAD_SRC}
 )
