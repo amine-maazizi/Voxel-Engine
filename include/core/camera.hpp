@@ -17,7 +17,7 @@ class Camera {
             float yaw = -90.0f,
             float pitch = 0.0f,
             float zoom = 45.0f,
-            float aspectRatio = 16.0f / 9.0f,
+            float aspectRatio = 800.0f / 600.0f,
             float nearPlane = 0.1f,
             float farPlane = 100.0f,
             float cameraSpeed = 2.5f

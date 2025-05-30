@@ -26,7 +26,7 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
 }
 
 
-Engine::Engine(bool wireframe) : wireframe(wireframe) {
+Engine::Engine(bool wireframe, int chunkSize) : wireframe(wireframe), chunkSize(chunkSize) {
     if (!glfwInit()) {
         const char* description;
         glfwGetError(&description);
@@ -87,9 +87,17 @@ Engine::Engine(bool wireframe) : wireframe(wireframe) {
         glfwTerminate();
         exit(-1);
     }
+
+    blockPositions = new glm::vec3[chunkSize]();
+
+    // for (int x=-chunkSize / 2; x < chunkSize / 2; x++) {
+    //     blockPositions[x + chunkSize] = glm::vec3(0.0, x, 0.0);
+    // }
+
 }
 
 Engine::~Engine() {
+    delete blockPositions;
     delete block; // Clean up the block object
     glfwDestroyWindow(window);
     glfwTerminate();
@@ -136,7 +144,7 @@ void Engine::render() {
     glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    for (int i = 0; i < blockCount; ++i) {
+    for (int i = 0; i < chunkSize; ++i) {
         renderBlock(blockPositions[i]);
     }
 }

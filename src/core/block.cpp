@@ -56,13 +56,6 @@ void Block::update(glm::mat4 modelMatrix, glm::mat4 viewMatrix, glm::mat4 projec
 }
 
 void Block::render() {
-    float timeValue = glfwGetTime();
-    float redValue = (sin(timeValue) / 2.0f) + 0.5f;
-    glm::vec4 color = glm::vec4(redValue, 0.0f, 0.0f, 1.0f);
-    glm::vec4 color_2 = glm::vec4(0.0f, redValue, 0.0f, 1.0f);
-    shader.setVec4("top_grad", color);
-    shader.setVec4("bottom_grad", color_2);
-
     glBindVertexArray(VAO);
     glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);

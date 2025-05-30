@@ -9,8 +9,8 @@
 
 class Engine {
     public:
-        Engine(bool);
-        Engine() : Engine(false) {} // Default constructor with wireframe set to false
+        Engine(bool, int chunkSize);
+        Engine() : Engine(false, 16) {} // Default constructor with wireframe set to false
          ~Engine();
 
         void update();
@@ -24,17 +24,10 @@ class Engine {
         Block* block;
 
         bool wireframe;
+        int chunkSize;
 
         // Block array
-        static const int blockCount = 6; // Number of blocks to render
-        glm::vec3 blockPositions[6] = {
-            glm::vec3(0.0f, 0.0f, -5.0f),
-            glm::vec3(2.0f, 0.0f, -5.0f),
-            glm::vec3(-2.0f, 0.0f, -5.0f),
-            glm::vec3(0.0f, 2.0f, -5.0f),
-            glm::vec3(0.0f, -2.0f, -5.0f),
-            glm::vec3(1.0f, 1.0f, -5.0f)
-        };
+        glm::vec3* blockPositions;
     public:
         Camera camera;
 
