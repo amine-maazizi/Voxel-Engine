@@ -5,7 +5,7 @@
 
 #include "core/block.hpp"
 #include "core/camera.hpp"
-
+#include "rendering/perlin_noise.hpp"
 
 class Engine {
     public:
@@ -26,7 +26,6 @@ class Engine {
         bool wireframe;
         int chunkSize;
 
-        // Block array
         BlockData* blockData;
     public:
         Camera camera;

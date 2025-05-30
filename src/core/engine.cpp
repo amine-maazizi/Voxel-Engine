@@ -92,14 +92,28 @@ Engine::Engine(bool wireframe, int chunkSize) : wireframe(wireframe), chunkSize(
     blockData = new BlockData[chunkSize * chunkSize * chunkSize];
     int halfChunk = chunkSize /2;
 
-    for (int x=-halfChunk; x < halfChunk; x++) {
-        for (int y=-halfChunk; y < halfChunk; y++) {
-            for (int z=-halfChunk; z < halfChunk; z++) {
+    float noiseScale = 1 / (float)chunkSize;
+    int maxHeight = halfChunk;  
+
+    for (int x = -halfChunk; x < halfChunk; x++) {
+        for (int z = -halfChunk; z < halfChunk; z++) {
+            // Generate a height value from Perlin noise for the current x,z column
+            float noiseValue = PerlinNoise::generate(x * noiseScale, z * noiseScale); 
+            // Map noiseValue (usually between -1 and 1 or 0 and 1) to height range
+            int terrainHeight = static_cast<int>((noiseValue + 1.0f) / 2.0f * maxHeight); 
+
+            for (int y = -halfChunk; y < halfChunk; y++) {
                 int index = x + halfChunk + chunkSize * ((y + halfChunk) + chunkSize * (z + halfChunk));
-                blockData[index] = (y < 0) ? BlockData{glm::vec3(x, y, z), BlockType::DIRT} : BlockData{glm::vec3(x, y, z), BlockType::AIR};
+
+                if (y <= terrainHeight) {
+                    blockData[index] = BlockData{glm::vec3(x, y, z), BlockType::DIRT};
+                } else {
+                    blockData[index] = BlockData{glm::vec3(x, y, z), BlockType::AIR};
+                }
             }
         }
     }
+
 
 }
 

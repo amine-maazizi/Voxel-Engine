@@ -26,6 +26,7 @@ set(SOURCES
     src/main.cpp
     
     src/rendering/shader.cpp
+    src/rendering/perlin_noise.cpp
 
     src/core/engine.cpp
     src/core/block.cpp
