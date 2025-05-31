@@ -8,6 +8,8 @@
 #include <iostream>
 #include "utils/constantes.hpp"
 
+
+
 class Camera {
     public:
         Camera(
@@ -38,6 +40,8 @@ class Camera {
         glm::mat4 getProjectionMatrix() const;
     public:
         glm::vec3 position;
+        float zoom;
+
     private:
         glm::vec3 front;
         glm::vec3 direction;
@@ -47,7 +51,6 @@ class Camera {
         float fov;
         float yaw;
         float pitch;
-        float zoom;
         float aspectRatio;
         float nearPlane;
         float farPlane;

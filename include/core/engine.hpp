@@ -1,12 +1,11 @@
 #pragma once
 #include "core/camera.hpp"
-#include "core/block.hpp"
 #include "core/chunk.hpp"
 #include "utils/constantes.hpp"
 
 class Engine {
 public:
-    Engine(bool wireframe = false, int chunkSize = 16);
+    Engine(bool wireframe = true, int chunkSize = 16);
     ~Engine();
     
     void update();
@@ -24,7 +23,6 @@ private:
     bool wireframe;
     int chunkSize;
     
-    Block* block;
     Chunk* currentChunk;
     glm::ivec3 chunkPosition;
     

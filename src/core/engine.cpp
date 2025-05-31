@@ -68,22 +68,14 @@ Engine::Engine(bool wireframe, int chunkSize) : wireframe(wireframe), chunkSize(
     glEnable(GL_DEPTH_TEST);
     camera = Camera();
 
-    block = new Block();
-    if (!block) {
-        std::cerr << "Failed to create Block object" << std::endl;
-        glfwDestroyWindow(window);
-        glfwTerminate();
-        exit(-1);
-    }
-
     chunkPosition = glm::ivec3(0, 0, 0);
     currentChunk = new Chunk(chunkPosition, chunkSize);
     currentChunk->generate();
+    currentChunk->assembleMesh();
 }
 
 Engine::~Engine() {
     delete currentChunk;
-    delete block; 
     glfwDestroyWindow(window);
     glfwTerminate();
 }
@@ -92,20 +84,7 @@ void Engine::generateChunk() {
     delete currentChunk;
     currentChunk = new Chunk(chunkPosition, chunkSize);
     currentChunk->generate();
-}
-
-void Engine::renderBlock(glm::vec3 position, glm::vec3 rotation) {
-    glm::mat4 model = glm::mat4(1.0f);
-    model = glm::translate(model, position);
-    model = glm::rotate(model, glm::radians(rotation.x), glm::vec3(1.0f, 0.0f, 0.0f));
-    model = glm::rotate(model, glm::radians(rotation.y), glm::vec3(0.0f, 1.0f, 0.0f));
-    model = glm::rotate(model, glm::radians(rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
-
-    glm::mat4 view = camera.getViewMatrix();
-    glm::mat4 projection = camera.getProjectionMatrix();
-
-    block->update(model, view, projection);
-    block->render();
+    currentChunk->assembleMesh();
 }
 
 void Engine::processInput(float dt) {
@@ -144,26 +123,28 @@ void Engine::update() {
 
         processInput(dt);
         camera.update();
+        
         render();
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
 }
 
+// Update the Engine::render() method:
 void Engine::render() {
     glClearColor(0.5f, 0.8f, 0.9f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    BlockData* blockData = currentChunk->getBlockData();
+    // Set up matrices
+    glm::mat4 model = glm::mat4(1.0f);
+    glm::mat4 view = camera.getViewMatrix();
+    glm::mat4 projection = glm::perspective(glm::radians(camera.zoom), 
+                                          (float)WIDTH / (float)HEIGHT, 
+                                          0.1f, 100.0f);
 
-    for (int x = 0; x < chunkSize; x++) {
-        for (int y = 0; y < chunkSize; y++) {
-            for (int z = 0; z < chunkSize; z++) {
-                if (currentChunk->isBlockVisible(x, y, z)) {
-                    int index = x + chunkSize * (y + chunkSize * z);
-                    renderBlock(blockData[index].position);
-                }
-            }
-        }
-    }
+    // Update chunk with matrices
+    currentChunk->update(model, view, projection);
+    
+    // Render the chunk
+    currentChunk->render();
 }
