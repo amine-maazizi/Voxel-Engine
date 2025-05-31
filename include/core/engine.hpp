@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <stdlib.h>
+#include <vector>
 
 #include "core/block.hpp"
 #include "core/camera.hpp"
@@ -10,7 +11,7 @@
 class Engine {
     public:
         Engine(bool, int chunkSize);
-        Engine() : Engine(false, 16) {} // Default constructor with wireframe set to false
+        Engine() : Engine(true, 16) {} // Default constructor with wireframe set to false
          ~Engine();
 
         void update();

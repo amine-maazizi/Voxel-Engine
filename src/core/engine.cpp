@@ -78,7 +78,6 @@ Engine::Engine(bool wireframe, int chunkSize) : wireframe(wireframe), chunkSize(
     }
     glEnable(GL_DEPTH_TEST); // Enable depth testing for 3D rendering
 
-
     camera = Camera();
 
     block = new Block(); // Initialize the block object
@@ -162,11 +161,51 @@ void Engine::update() {
 }
 
 void Engine::render() {
-    glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+    glClearColor(0.5f, 0.8f, 0.9f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    for (int i = 0; i < chunkSize * chunkSize * chunkSize; ++i) {
-        if (blockData[i].type == BlockType::DIRT)
-            renderBlock(blockData[i].position);
+    int halfChunk = chunkSize / 2;
+    for (int x = 0; x < chunkSize; x++) {
+        for (int y = 0; y < chunkSize; y++) {
+            for (int z = 0; z < chunkSize; z++) {
+                int index = x + chunkSize * (y + chunkSize * z);
+                if (blockData[index].type != BlockType::DIRT)
+                    continue;
+
+                bool visible = false;
+
+                // Check all 6 directions
+                for (auto [dx, dy, dz] : std::vector<std::tuple<int, int, int>>{
+                    {1, 0, 0}, {-1, 0, 0},
+                    {0, 1, 0}, {0, -1, 0},
+                    {0, 0, 1}, {0, 0, -1}}) {
+
+                    int nx = x + dx;
+                    int ny = y + dy;
+                    int nz = z + dz;
+
+                    if (nx < 0 || ny < 0 || nz < 0 || nx >= chunkSize || ny >= chunkSize || nz >= chunkSize) {
+                        visible = true; // neighbor is out of bounds → exposed face
+                        break;
+                    }
+
+                    int nIndex = nx + chunkSize * (ny + chunkSize * nz);
+                    if (blockData[nIndex].type == BlockType::AIR) {
+                        visible = true; // face is exposed
+                        break;
+                    }
+                }
+
+                if (visible) {
+                    renderBlock(blockData[index].position);
+                }
+            }
+        }
     }
+
+
+    // for (int i = 0; i < chunkSize * chunkSize * chunkSize; ++i) {
+    //     if (blockData[i].type == BlockType::DIRT)
+    //         renderBlock(blockData[i].position);
+    // }
 }
