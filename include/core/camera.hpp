@@ -23,7 +23,7 @@ class Camera {
             float aspectRatio = WIDTH / HEIGHT,
             float nearPlane = 0.1f,
             float farPlane = 100.0f,
-            float cameraSpeed = 2.5f
+            float cameraSpeed = 10.0f
         );
         ~Camera();
 

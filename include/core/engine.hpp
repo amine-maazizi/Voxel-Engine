@@ -2,10 +2,11 @@
 #include "core/camera.hpp"
 #include "core/chunk.hpp"
 #include "utils/constantes.hpp"
+#include <glm/glm.hpp>
 
 class Engine {
 public:
-    Engine(bool wireframe = true, int chunkSize = 16);
+    Engine(bool wireframe = false, glm::vec3 chunkSize = glm::vec3(64, 16, 64));
     ~Engine();
     
     void update();
@@ -16,12 +17,11 @@ public:
     Camera camera;
 
 private:
-    const int CHUNK_SIZE;
     const float CHUNK_THRESHOLD;
     
     GLFWwindow* window;
     bool wireframe;
-    int chunkSize;
+    glm::vec3 chunkSize;  // This is the configurable chunk size
     
     Chunk* currentChunk;
     glm::ivec3 chunkPosition;

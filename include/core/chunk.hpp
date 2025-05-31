@@ -96,7 +96,7 @@ struct Block {
 
 class Chunk {
 public:
-    Chunk(glm::ivec3 position, int size);
+    Chunk(glm::ivec3 position, glm::vec3 size);
     ~Chunk();
     
     void generate();
@@ -110,12 +110,11 @@ public:
     bool isBlockVisible(int x, int y, int z) const;
 
 private:
-    static const int CHUNK_SIZE = 16;
     static const float NOISE_SCALE;
     static const int MAX_HEIGHT_OFFSET = 8;
     
     glm::ivec3 chunkPosition;
-    int chunkSize;
+    glm::vec3 chunkSize;  // Use the configurable size, not a constant
     BlockData* blockData;
     
     int getIndex(int x, int y, int z) const;

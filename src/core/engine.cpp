@@ -23,7 +23,9 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
     }
 }
 
-Engine::Engine(bool wireframe, int chunkSize) : wireframe(wireframe), chunkSize(chunkSize), CHUNK_SIZE(16), CHUNK_THRESHOLD(8.0f) {
+Engine::Engine(bool wireframe, glm::vec3 chunkSize) 
+    : wireframe(wireframe), chunkSize(chunkSize), CHUNK_THRESHOLD(8.0f) {
+    
     if (!glfwInit()) {
         const char* description;
         glfwGetError(&description);
@@ -106,8 +108,9 @@ void Engine::update() {
         bool needNewChunk = false;
         glm::ivec3 newChunkPosition = chunkPosition;
         
-        int cameraChunkX = static_cast<int>(std::floor(camera.position.x / CHUNK_SIZE)) * CHUNK_SIZE;
-        int cameraChunkZ = static_cast<int>(std::floor(camera.position.z / CHUNK_SIZE)) * CHUNK_SIZE;
+        // Calculate chunk boundaries based on actual chunk sizes
+        int cameraChunkX = static_cast<int>(std::floor(camera.position.x / chunkSize.x)) * static_cast<int>(chunkSize.x);
+        int cameraChunkZ = static_cast<int>(std::floor(camera.position.z / chunkSize.z)) * static_cast<int>(chunkSize.z);
         
         if (cameraChunkX != chunkPosition.x || cameraChunkZ != chunkPosition.z) {
             newChunkPosition.x = cameraChunkX;
@@ -118,7 +121,8 @@ void Engine::update() {
         if (needNewChunk) {
             chunkPosition = newChunkPosition;
             generateChunk();
-            std::cout << "Generated new chunk at: " << chunkPosition.x << ", " << chunkPosition.z << std::endl;
+            std::cout << "Generated new chunk at: " << chunkPosition.x << ", " << chunkPosition.z 
+                      << " (size: " << chunkSize.x << "x" << chunkSize.y << "x" << chunkSize.z << ")" << std::endl;
         }
 
         processInput(dt);
@@ -130,7 +134,6 @@ void Engine::update() {
     }
 }
 
-// Update the Engine::render() method:
 void Engine::render() {
     glClearColor(0.5f, 0.8f, 0.9f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

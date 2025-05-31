@@ -39,21 +39,27 @@ Camera::Camera(
 // Destructor
 Camera::~Camera() {}
 
-// Process input for camera movement (placeholder, can be expanded)
+// Process input for camera movement
 void Camera::processInput(float dt)
 {
+    // Define world-space directions
+    const glm::vec3 worldUp = glm::vec3(0.0f, 1.0f, 0.0f);    // World Y-axis (vertical)
+    const glm::vec3 worldRight = glm::vec3(0.0f, 0.0f, 1.0f); // World X-axis (horizontal)
+    const glm::vec3 worldForward = glm::vec3(1.0f, 0.0f, 0.0f); // World Z-axis (depth)
+
+    // Move in world-space directions, independent of camera orientation
     if (glfwGetKey(glfwGetCurrentContext(), GLFW_KEY_W) == GLFW_PRESS) {
-        position += front * cameraSpeed * dt; // Move forward
+        position += worldForward * cameraSpeed * dt; // Move forward along world Z
     } else if (glfwGetKey(glfwGetCurrentContext(), GLFW_KEY_S) == GLFW_PRESS) {
-        position -= front * cameraSpeed * dt; // Move backward
+        position -= worldForward * cameraSpeed * dt; // Move backward along world Z
     } else if (glfwGetKey(glfwGetCurrentContext(), GLFW_KEY_A) == GLFW_PRESS) {
-        position -= glm::normalize(glm::cross(front, up)) * cameraSpeed * dt; // Move left
+        position -= worldRight * cameraSpeed * dt; // Move left along world X
     } else if (glfwGetKey(glfwGetCurrentContext(), GLFW_KEY_D) == GLFW_PRESS) {
-        position += glm::normalize(glm::cross(front, up)) * cameraSpeed * dt; // Move right
+        position += worldRight * cameraSpeed * dt; // Move right along world X
     } else if (glfwGetKey(glfwGetCurrentContext(), GLFW_KEY_Q) == GLFW_PRESS) {
-        position += up * cameraSpeed * dt; // Move up
+        position += worldUp * cameraSpeed * dt; // Move up along world Y
     } else if (glfwGetKey(glfwGetCurrentContext(), GLFW_KEY_E) == GLFW_PRESS) {
-        position -= up * cameraSpeed * dt; // Move down
+        position -= worldUp * cameraSpeed * dt; // Move down along world Y
     }
 }
 
