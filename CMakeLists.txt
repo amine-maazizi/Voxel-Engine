@@ -32,6 +32,7 @@ set(SOURCES
     src/core/engine.cpp
     src/core/block.cpp
     src/core/camera.cpp
+    src/core/chunk.cpp
 
     src/utils/stb_image.cpp
 

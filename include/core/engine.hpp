@@ -1,35 +1,32 @@
 #pragma once
-
-#include <iostream>
-#include <stdlib.h>
-#include <vector>
-
-#include "core/block.hpp"
 #include "core/camera.hpp"
-#include "rendering/perlin_noise.hpp"
+#include "core/block.hpp"
+#include "core/chunk.hpp"
+#include "utils/constantes.hpp"
 
 class Engine {
-    public:
-        Engine(bool, int chunkSize);
-        Engine() : Engine(true, 16) {} // Default constructor with wireframe set to false
-         ~Engine();
+public:
+    Engine(bool wireframe = false, int chunkSize = 16);
+    ~Engine();
+    
+    void update();
+    void render();
+    void processInput(float dt);
+    void renderBlock(glm::vec3 position, glm::vec3 rotation = glm::vec3(0.0f));
+    
+    Camera camera;
 
-        void update();
-        void render();
-        void processInput(float);
-
-        void renderBlock(glm::vec3 position, glm::vec3 rotation = glm::vec3(0.0f, 0.0f, 0.0f));
-    private:
-        GLFWwindow* window;
-
-        Block* block;
-
-        bool wireframe;
-        int chunkSize;
-
-        BlockData* blockData;
-    public:
-        Camera camera;
-
+private:
+    const int CHUNK_SIZE;
+    const float CHUNK_THRESHOLD;
+    
+    GLFWwindow* window;
+    bool wireframe;
+    int chunkSize;
+    
+    Block* block;
+    Chunk* currentChunk;
+    glm::ivec3 chunkPosition;
+    
+    void generateChunk();
 };
-

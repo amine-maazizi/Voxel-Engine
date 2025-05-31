@@ -6,6 +6,7 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
+#include "utils/constantes.hpp"
 
 class Camera {
     public:
@@ -17,7 +18,7 @@ class Camera {
             float yaw = -90.0f,
             float pitch = 0.0f,
             float zoom = 45.0f,
-            float aspectRatio = 800.0f / 600.0f,
+            float aspectRatio = WIDTH / HEIGHT,
             float nearPlane = 0.1f,
             float farPlane = 100.0f,
             float cameraSpeed = 2.5f
@@ -35,8 +36,9 @@ class Camera {
         
         glm::mat4 getViewMatrix() const;
         glm::mat4 getProjectionMatrix() const;
-    private:
+    public:
         glm::vec3 position;
+    private:
         glm::vec3 front;
         glm::vec3 direction;
         glm::vec3 up;
